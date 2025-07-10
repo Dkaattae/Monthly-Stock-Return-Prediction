@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+xgboost = "*"
+flask = "*"
+prefect = "*"
+boto3 = "*"
+scikit-learn = "*"
+mlflow = "==2.22.0"
+pandas = "==2.3.0"
+mangum = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
