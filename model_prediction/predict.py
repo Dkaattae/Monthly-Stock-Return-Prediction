@@ -1,16 +1,24 @@
 import os
 import json
 import pickle
-
+import requests
 import pandas as pd
 import mlflow
+
+def is_mlflow_server_alive():
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "")
+    try:
+        response = requests.get(tracking_uri)
+        return response.status_code == 200
+    except requests.RequestException:
+        return False
 
 def get_model_location(run_id, model_name='model'):
     model_location = os.getenv('MODEL_LOCATION')
 
     if model_location is not None:
         return model_location
-
+    
     s3_bucket = os.getenv('S3_BUCKET', 'mlflow-artifacts-2025mlops')
     s3_prefix = os.getenv('S3_PREFIX', 'mlflow')
     experiment_id = os.getenv('MLFLOW_EXPERIMENT_ID', '2')
@@ -52,23 +60,24 @@ def load_model_from_local(model_example_path, artifact_name):
 def load_model_artifact(model_name='model', 
                         artifact_name='dv.pkl', 
                         model_example_path='./artifacts/model'):
-    try:
-        return load_model_from_registry(model_name, artifact_name)
-    except Exception:
-        print("Mlflow server not accessible. try to load model from S3 bucket")
+    if is_mlflow_server_alive():
+        try:
+            return load_model_from_registry(model_name, artifact_name)
+        except Exception:
+            print("Mlflow server not accessible. try to load model from S3 bucket")
 
-        run_id = os.getenv('MLFLOW_RUN_ID')
-        if run_id:
-            try: 
-                return load_model_from_s3(run_id, artifact_name)
+    run_id = os.getenv('MLFLOW_RUN_ID')
+    if run_id:
+        try: 
+            return load_model_from_s3(run_id, artifact_name)
+        except Exception:
+            print('S3 not accessible or model not founnd')
+            try:
+                return load_model_from_local(model_example_path)
             except Exception:
-                print('S3 not accessible or model not founnd')
-                try:
-                    return load_model_from_local(model_example_path)
-                except Exception:
-                    print('failed to load model')
-        else:
-            print('run_id not found')
+                print('failed to load model')
+    else:
+        print('run_id not found')
     return load_model_from_local(model_example_path, artifact_name)
 
 def load_artifact(artifact_path):
