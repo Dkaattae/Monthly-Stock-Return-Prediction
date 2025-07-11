@@ -1,0 +1,60 @@
+version: '3.7'
+
+volumes: 
+  grafana_data: {}
+
+networks:
+  front-tier:
+  back-tier:
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    networks:
+      - back-tier
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - back-tier
+      - front-tier  
+
+  grafana:
+    image: grafana/grafana-enterprise
+    user: "472"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ./config/grafana_dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+      - ./dashboards:/opt/grafana/dashboards
+    networks:
+      - back-tier
+      - front-tier
+    restart: always
+  
+  dataloader:
+    build:
+      context: ./data_loader
+    depends_on:
+      - db
+    environment:
+      - PGHOST=db
+      - PGUSER=postgres
+      - PGPASSWORD=example
+      - PGDATABASE=test
+    volumes:
+      - ./data_loader:/app
+    command: ["python", "metrics_calculation.py"]
+    networks:
+      - back-tier
