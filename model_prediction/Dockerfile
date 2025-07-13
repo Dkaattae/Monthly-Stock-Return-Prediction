@@ -13,4 +13,3 @@ COPY [ "predict_app.py", "predict.py", "./" ]
 COPY [ "artifacts/", "artifacts/"]
 
 CMD [ "gunicorn", "--workers", "4", "--bind", "0.0.0.0:8080", "predict_app:app" ]
-# CMD ["python", "predict_app.py"]

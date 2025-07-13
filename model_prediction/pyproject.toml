@@ -1,0 +1,18 @@
+[tool.pylint.messages_control]
+
+disable = [
+    "broad-exception-raised",
+    "broad-exception-caught"
+]
+
+[tool.pylint."BASIC"]
+good-names = ["X", "X_train", "X_val", "_test", "y", "y_train", "y_val", "y_test"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+skip-string-normalization = true
+
+[tool.isort]
+multi_line_output = 3
+length_sort = true
