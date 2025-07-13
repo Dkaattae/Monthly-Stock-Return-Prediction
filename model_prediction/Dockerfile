@@ -7,7 +7,7 @@ RUN pip install pipenv
 
 COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
-RUN pipenv install --system --deploy
+RUN pipenv install --dev --system --deploy
 
 COPY [ "predict_app.py", "predict.py", "./" ]
 COPY [ "artifacts/", "artifacts/"]

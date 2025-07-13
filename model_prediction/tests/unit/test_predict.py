@@ -13,7 +13,7 @@ new_data = pd.DataFrame([test_data])
 # new_data contains all features needed, 
 # data type
 def test_prepare_features():
-    training_data = pd.read_json('tests/test.json')
+    training_data = pd.read_json('tests/unit/test.json')
     training_data['date'] = pd.to_datetime(training_data['date'])
     vectorizer = DictVectorizer(sparse=False)
     categorical = ['sector']

@@ -45,7 +45,6 @@ test outside docker
 # mock s3
 test outside of docker
 using localstack to mock S3
-(not done)
 
 # formatting
 `pipenv run black .`
@@ -55,3 +54,10 @@ using localstack to mock S3
 
 # linting
 `pipenv run pylint predict.py`
+
+# CI
+```
+chmod +x run.sh
+./run.sh
+```
+(not done)
