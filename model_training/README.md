@@ -8,12 +8,12 @@ base image python 3.12
 environment variable MLFLOW_TRACKING_URI is exported, if mlflow server hosted in cloud   
 if not, it will default to 'localhost:5000'
 
-it will run tasks in flow:   
-1, download data
-2, transform data
-3, preprocess data
-4, hyperopt training
-5, register model 
+it will run tasks in flow:    
+1, download data   
+2, transform data   
+3, preprocess data   
+4, hyperopt training   
+5, register model    
 
 note: download data and transform data tasks are not robust in this pipeline.   
 for data versioning, check my [data engineering project](https://github.com/Dkaattae/annual_quarter_report_and_stock_price)

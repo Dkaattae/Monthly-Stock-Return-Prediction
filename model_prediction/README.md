@@ -60,4 +60,3 @@ using localstack to mock S3
 chmod +x run.sh
 ./run.sh
 ```
-(not done)
