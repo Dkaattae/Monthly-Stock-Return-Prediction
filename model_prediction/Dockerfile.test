@@ -12,4 +12,4 @@ RUN apt-get update && apt-get install -y awscli
 RUN pip install pipenv
 RUN pipenv install --dev --system --deploy
 
-CMD ["pytest", "tests/unit"]
+CMD ["pytest"]

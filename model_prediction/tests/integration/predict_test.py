@@ -5,7 +5,7 @@ def test_predict_endpoint():
     with open("json_records.json") as f:
         data = json.load(f)
 
-    response = requests.post("http://my-prediction-app:9696/predict", json=data)
+    response = requests.post("http://my-prediction-app:8080/predict", json=data)
     
     assert response.status_code == 200
     prediction_json = response.json()

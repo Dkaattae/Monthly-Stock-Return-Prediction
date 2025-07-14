@@ -4,10 +4,11 @@ WORKDIR /app
 
 RUN pip install -U pip
 RUN pip install pipenv 
+RUN apt-get update && apt-get install -y curl
 
 COPY [ "Pipfile", "Pipfile.lock", "./" ]
 
-RUN pipenv install --dev --system --deploy
+RUN pipenv install --system --deploy
 
 COPY [ "predict_app.py", "predict.py", "./" ]
 COPY [ "artifacts/", "artifacts/"]
